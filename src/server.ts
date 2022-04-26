@@ -16,8 +16,10 @@ import { productRoute } from './routes/product';
 const app = express();
 dotenv.config();
 
+
 // CORS
-const allowedOrigins = ['http://localhost:5000'];
+//const allowedOrigins = [" * "]; // Libera todas as origens
+const allowedOrigins = ['http://localhost:5000', 'http://localhost:3000'];
 const options: cors.CorsOptions = {
   origin: allowedOrigins
 };

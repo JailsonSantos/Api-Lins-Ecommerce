@@ -1,12 +1,47 @@
+import dotenv from 'dotenv'
+dotenv.config()
 
-import { Router } from 'express';
+
+import { Router, Response, Request } from 'express';
 
 const stripeRoute = Router();
 
-const stripe = require('stripe')(process.env.STRIPE_KEY_SECRET)
+console.log('CHAVE STRIPE: ', process.env.STRIPE_KEY_SECRET)
+/* 
 
-stripeRoute.post('/payment', async (req, res) => {
-  const session = await stripe.checkout.sessions.create({
+console.log('PASS_SECRET: ', String(process.env.PASS_SECRET))
+const k_stripe = "sk_test_51KsYb0K8tmpXblZ8KahaNnXOQPUPdVGQQb6QRD6Aya5pbvtMdDKcCfZKZmkXh6gIPvpf7d30F8wuS7vzTXqmYbcD001dIIQ6aD"
+ */
+
+//KEY_PRIVATE = sk_test_51KsYb0K8tmpXblZ8KahaNnXOQPUPdVGQQb6QRD6Aya5pbvtMdDKcCfZKZmkXh6gIPvpf7d30F8wuS7vzTXqmYbcD001dIIQ6aD
+
+const stripe = require('stripe')('sk_test_51KsYb0K8tmpXblZ8KahaNnXOQPUPdVGQQb6QRD6Aya5pbvtMdDKcCfZKZmkXh6gIPvpf7d30F8wuS7vzTXqmYbcD001dIIQ6aD')
+
+
+stripeRoute.post('/payment', (request, response) => {
+  stripe.charges.create({
+    source: request.body.tokenId,
+    amount: request.body.amount,
+    currency: 'usd',
+  }, (stripeError: { message: any; }, stripeResponse: any) => {
+    if (stripeError) {
+
+      console.log("ERROR Backend: ", stripeError.message);
+
+      response.status(500).json(stripeError);
+    } else {
+
+      console.log("SUCESSO Backend: ", stripeResponse);
+
+      response.status(200).json(stripeResponse)
+    }
+  });
+});
+
+export { stripeRoute };
+
+
+/*   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
         price_data: {
@@ -24,10 +59,8 @@ stripeRoute.post('/payment', async (req, res) => {
     cancel_url: 'https://localhost:3000/cancel',
   });
 
-  res.redirect(303, session.url);
-});
+  res.redirect(303, session.url); */
 
-export { stripeRoute };
 
 /* 
 
