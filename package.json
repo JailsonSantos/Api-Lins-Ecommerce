@@ -2,7 +2,7 @@
   "name": "api-lins-ecommerce",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index.ts",
+  "main": "./src/server.ts",
   "engines": {
     "node": "16.x"
   },
