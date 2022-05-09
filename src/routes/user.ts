@@ -23,10 +23,10 @@ userRoute.put('/:id', verifyTokenAndAuthorization, async (request: Request, resp
       { new: true }
     );
 
-    response.status(200).json(updatedUser);
+    return response.status(200).json(updatedUser);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -34,9 +34,9 @@ userRoute.put('/:id', verifyTokenAndAuthorization, async (request: Request, resp
 userRoute.delete('/:id', verifyTokenAndAuthorization, async (request: Request, response: Response) => {
   try {
     await User.findByIdAndDelete(request.params.id);
-    response.status(200).json('User has been deleted...');
+    return response.status(200).json('User has been deleted...');
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -47,11 +47,11 @@ userRoute.get('/find/:id', verifyTokenAndAdmin, async (request: Request, respons
 
     if (user) {
       const { password, ...others } = user._doc;
-      response.status(200).json(others);
+      return response.status(200).json(others);
     }
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -64,10 +64,10 @@ userRoute.get('/', verifyTokenAndAdmin, async (request: Request, response: Respo
       ? await User.find().sort({ _id: -1 }).limit(5)
       : await User.find();
 
-    response.status(200).json(users);
+    return response.status(200).json(users);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -85,10 +85,10 @@ userRoute.get('/statistics', verifyTokenAndAdmin, async (request: Request, respo
       ]
     );
 
-    response.status(200).json(data);
+    return response.status(200).json(data);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 

@@ -12,9 +12,9 @@ productRoute.post('/', verifyTokenAndAdmin, async (request: Request, response: R
 
   try {
     const savedProduct = await newProduct.save();
-    response.status(200).json(savedProduct);
+    return response.status(200).json(savedProduct);
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -28,10 +28,10 @@ productRoute.put('/:id', verifyTokenAndAdmin, async (request: Request, response:
       { new: true }
     );
 
-    response.status(200).json(updatedProduct);
+    return response.status(200).json(updatedProduct);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -39,9 +39,9 @@ productRoute.put('/:id', verifyTokenAndAdmin, async (request: Request, response:
 productRoute.delete('/:id', verifyTokenAndAdmin, async (request: Request, response: Response) => {
   try {
     await Product.findByIdAndDelete(request.params.id);
-    response.status(200).json('Product has been deleted...');
+    return response.status(200).json('Product has been deleted...');
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -52,11 +52,11 @@ productRoute.get('/find/:id', async (request: Request, response: Response) => {
 
     if (product) {
       const { password, ...others } = product._doc;
-      response.status(200).json(others);
+      return response.status(200).json(others);
     }
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -80,9 +80,9 @@ productRoute.get('/', async (request: Request, response: Response) => {
       products = await Product.find();
     }
 
-    response.status(200).json(products);
+    return response.status(200).json(products);
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 

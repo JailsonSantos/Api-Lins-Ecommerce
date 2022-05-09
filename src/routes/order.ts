@@ -16,9 +16,9 @@ orderRoute.post('/', verifyToken, async (request: Request, response: Response) =
 
   try {
     const savedOrder = await newOrder.save();
-    response.status(200).json(savedOrder);
+    return response.status(200).json(savedOrder);
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -32,10 +32,10 @@ orderRoute.put('/:id', verifyTokenAndAdmin, async (request: Request, response: R
       { new: true }
     );
 
-    response.status(200).json(updatedOrder);
+    return response.status(200).json(updatedOrder);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -43,9 +43,9 @@ orderRoute.put('/:id', verifyTokenAndAdmin, async (request: Request, response: R
 orderRoute.delete('/:id', verifyTokenAndAdmin, async (request: Request, response: Response) => {
   try {
     await Order.findByIdAndDelete(request.params.id);
-    response.status(200).json('Order has been deleted...');
+    return response.status(200).json('Order has been deleted...');
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -53,9 +53,9 @@ orderRoute.delete('/:id', verifyTokenAndAdmin, async (request: Request, response
 orderRoute.get("/find/:userId", verifyTokenAndAuthorization, async (request: Request, response: Response) => {
   try {
     const orders = await Order.find({ userId: request.params.userId });
-    response.status(200).json(orders);
+    return response.status(200).json(orders);
   } catch (err) {
-    response.status(500).json(err);
+    return response.status(500).json(err);
   }
 });
 
@@ -63,22 +63,31 @@ orderRoute.get("/find/:userId", verifyTokenAndAuthorization, async (request: Req
 orderRoute.get('/', verifyTokenAndAdmin, async (request: Request, response: Response) => {
   try {
     const orders = await Order.find();
-    response.status(200).json(orders);
+    return response.status(200).json(orders);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
 // GET MONTHLY INCOME
 orderRoute.get("/income", verifyTokenAndAdmin, async (request: Request, response: Response) => {
+
+  //  const productId = request.query.idProduct;
+  //  console.log("ID DO PRODUTO: ", productId);
+
   const date = new Date();
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
 
   try {
     const income = await Order.aggregate([
-      { $match: { createdAt: { $gte: previousMonth } } },
+      {
+        $match: {
+          createdAt: { $gte: previousMonth },
+          // ...(productId !== undefined && { products: { $elemMatch: { productId } } })
+        }
+      },
       {
         $project: {
           month: { $month: "$createdAt" },
@@ -92,9 +101,11 @@ orderRoute.get("/income", verifyTokenAndAdmin, async (request: Request, response
         },
       },
     ]);
-    response.status(200).json(income);
+
+    return response.status(200).json(income);
+
   } catch (err) {
-    response.status(500).json(err);
+    return response.status(500).json(err);
   }
 });
 

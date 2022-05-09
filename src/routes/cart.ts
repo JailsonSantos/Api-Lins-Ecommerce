@@ -15,9 +15,9 @@ cartRoute.post('/', verifyToken, async (request: Request, response: Response) =>
 
   try {
     const savedCart = await newCart.save();
-    response.status(200).json(savedCart);
+    return response.status(200).json(savedCart);
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -31,10 +31,10 @@ cartRoute.put('/:id', verifyTokenAndAuthorization, async (request: Request, resp
       { new: true }
     );
 
-    response.status(200).json(updatedCart);
+    return response.status(200).json(updatedCart);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -42,9 +42,9 @@ cartRoute.put('/:id', verifyTokenAndAuthorization, async (request: Request, resp
 cartRoute.delete('/:id', verifyTokenAndAuthorization, async (request: Request, response: Response) => {
   try {
     await Cart.findByIdAndDelete(request.params.id);
-    response.status(200).json('Cart has been deleted...');
+    return response.status(200).json('Cart has been deleted...');
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 
@@ -52,9 +52,9 @@ cartRoute.delete('/:id', verifyTokenAndAuthorization, async (request: Request, r
 cartRoute.get("/find/:userId", verifyTokenAndAuthorization, async (request: Request, response: Response) => {
   try {
     const cart = await Cart.find({ userId: request.params.userId });
-    response.status(200).json(cart);
+    return response.status(200).json(cart);
   } catch (err) {
-    response.status(500).json(err);
+    return response.status(500).json(err);
   }
 });
 
@@ -62,10 +62,10 @@ cartRoute.get("/find/:userId", verifyTokenAndAuthorization, async (request: Requ
 cartRoute.get('/', verifyTokenAndAdmin, async (request: Request, response: Response) => {
   try {
     const carts = await Cart.find();
-    response.status(200).json(carts);
+    return response.status(200).json(carts);
 
   } catch (error) {
-    response.status(500).json(error);
+    return response.status(500).json(error);
   }
 });
 

@@ -10,31 +10,39 @@ authRoute.post("/register", async (request: Request, response: Response) => {
     username: request.body.username,
     email: request.body.email.toLowerCase(),
     password: CryptoJS.AES.encrypt(request.body.password, String(process.env.PASS_SECRET)),
+    occupation: request.body.occupation.toLowerCase(),
+    img: request.body.img,
+    isAdmin: request.body.isAdmin,
   });
 
   try {
     const savedUser = await newUser.save();
-    response.status(201).json(savedUser);
-  } catch (error) {
-    response.status(500).json(error);
+
+    return response.status(201).json(savedUser);
+
+  } catch (error: any) {
+    return response.status(500).json(error.message);
   }
 });
 
 // LOGIN
 authRoute.post("/login", async (request: Request, response: Response) => {
 
-  //const userNameFormatted = (request.body.username).toLowerCase()
-
   try {
     const user = await User.findOne({ username: request.body.username });
-    !user && response.status(401).json('Wrong credentials!')
+
+    if (!user) {
+      return response.status(404).json('Wrong credentials!');
+    }
 
     if (user) {
       const hashedPassword = CryptoJS.AES.decrypt(user.password, String(process.env.PASS_SECRET));
 
       const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-      OriginalPassword !== request.body.password && response.status(401).json('Wrong credentials!');
+      if (OriginalPassword !== request.body.password) {
+        return response.status(401).json('Wrong credentials!');
+      }
 
       const accessToken = jwt.sign(
         {
@@ -46,16 +54,12 @@ authRoute.post("/login", async (request: Request, response: Response) => {
       );
 
       const { password, ...others } = user._doc;
-      response.status(200).json({ ...others, accessToken });
 
-    /*   const { password, ...rest } = user._doc; //não Deu certo
-      const { _id, username, email, isAdmin, createdAt, updatedAt } = user;
-      const UserFormatted = { _id, username, email, isAdmin, createdAt, updatedAt, accessToken }
-      response.status(200).json(UserFormatted);
-   */  }
+      return response.status(200).json({ ...others, accessToken });
+    }
 
-  } catch (error) {
-    response.status(500).json(error);
+  } catch (error: any) {
+    return response.status(500).json(error.message);
   }
 });
 

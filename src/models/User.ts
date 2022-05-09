@@ -2,9 +2,11 @@ import { Schema, model, Document } from 'mongoose';
 
 interface UserProps extends Document {
   username: string;
+  occupation: string;
   email: string;
   password: string;
   isAdmin?: boolean;
+  img: string;
   _doc?: any;
 }
 
@@ -14,6 +16,9 @@ const userSchema = new Schema<UserProps>(
       type: String,
       required: true,
       unique: true
+    },
+    occupation: {
+      type: String,
     },
     email: {
       type: String,
@@ -27,6 +32,9 @@ const userSchema = new Schema<UserProps>(
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+    img: {
+      type: String
     },
   }, { timestamps: true }
 );
