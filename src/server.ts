@@ -12,6 +12,7 @@ import { userRoute } from './routes/user';
 import { cartRoute } from './routes/cart';
 import { orderRoute } from './routes/order';
 import { productRoute } from './routes/product';
+import { apiRoute } from './routes/api';
 
 const app = express();
 dotenv.config();
@@ -33,6 +34,7 @@ app.use(cors(options));
 app.use(express.json());
 
 // Routes API
+app.use('/', apiRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/carts', cartRoute);
