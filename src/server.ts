@@ -43,6 +43,6 @@ app.use('/api/products', productRoute);
 app.use('/api/checkout', stripeRoute);
 
 // Configuração de portas
-app.listen(process.env.PORT || 5000, () => {
-  console.log('Backend server is running...')
+app.listen(5000, () => {
+  console.log('Backend server is running in PORT: 5000...')
 });
