@@ -2,7 +2,7 @@
   "name": "api-lins-ecommerce",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/server.ts",
+  "main": "src/server.ts",
   "engines": {
     "node": "16.x"
   },
@@ -15,7 +15,9 @@
     "ts-node": "^10.7.0"
   },
   "scripts": {
-    "start": "node ./src/server.ts"
+    "start": "npx tsc -w",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
