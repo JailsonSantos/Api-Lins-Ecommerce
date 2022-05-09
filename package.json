@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.ts",
+  "engines": {
+    "node": "14.x"
+  },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/jsonwebtoken": "^8.5.8",
@@ -14,7 +17,7 @@
   "scripts": {
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
     "build": "tsc",
-    "start": "node ./dist/index.js"
+    "start": "node ./src/server.ts"
   },
   "repository": {
     "type": "git",
