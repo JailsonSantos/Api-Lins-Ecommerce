@@ -48,7 +48,7 @@ mongoose.connect(String(process.env.MONGO_URL))
   .then(() => console.log("DB Connection Successful!"))
   .catch(() => console.log("DB Connection Failure!"));
 
-app.use(cors(options));
+app.use(cors());
 app.use(express.json());
 
 // Routes API
