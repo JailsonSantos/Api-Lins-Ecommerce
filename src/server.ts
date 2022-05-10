@@ -23,7 +23,7 @@ const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:3000',
   'https://dashboard.stripe.com',
-  'https://checkout.stripe.com',
+  "https://checkout.stripe.com",
   'https://api-lins-ecommerce.vercel.app/api/checkout/payment',
   'https://resttesttest.com'
 ];
