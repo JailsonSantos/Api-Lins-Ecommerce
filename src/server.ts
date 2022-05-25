@@ -17,6 +17,32 @@ import { apiRoute } from './routes/api';
 const app = express();
 dotenv.config();
 
+// CORS
+//const allowedOrigins = [" * "]; // Libera todas as origens
+const allowedOrigins = [
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'https://dashboard.stripe.com',
+  "https://checkout.stripe.com",
+  'https://api-lins-ecommerce.vercel.app/api/checkout/payment',
+  'https://resttesttest.com'
+];
+const options: cors.CorsOptions = {
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'X-Access-Token',
+  ],
+  credentials: true,
+  methods: 'GET,PUT,POST,DELETE',
+  origin: allowedOrigins,
+  preflightContinue: false,
+};
+
+//console.log(allowedOrigins);
+
 // Configuração do MongoDB
 mongoose.connect(String(process.env.MONGO_URL))
   .then(() => console.log("DB Connection Successful!"))
