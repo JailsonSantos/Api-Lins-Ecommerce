@@ -15,7 +15,8 @@
     "ts-node": "^10.7.0"
   },
   "scripts": {
-    "start": "node ./src/server.ts",
+    "start": "node src/server.ts",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
     "build": "tsc"
   },
   "repository": {
