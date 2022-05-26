@@ -15,8 +15,7 @@
     "ts-node": "^10.7.0"
   },
   "scripts": {
-    "start": "npx tsc -w",
-    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
+    "start": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
     "build": "tsc"
   },
   "repository": {
