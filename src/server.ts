@@ -19,7 +19,7 @@ dotenv.config();
 
 // CORS
 //const allowedOrigins = [" * "]; // Libera todas as origens
-const allowedOrigins = [
+/* const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:3000',
   'https://dashboard.stripe.com',
@@ -39,17 +39,29 @@ const options: cors.CorsOptions = {
   methods: 'GET,PUT,POST,DELETE',
   origin: allowedOrigins,
   preflightContinue: false,
-};
+}; */
 
 //console.log(allowedOrigins);
+
+
+app.use(express.json());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
+  app.use(cors());
+  next();
+});
+
 
 // Configuração do MongoDB
 mongoose.connect(String(process.env.MONGO_URL))
   .then(() => console.log("DB Connection Successful!"))
   .catch(() => console.log("DB Connection Failure!"));
 
-app.use(cors());
-app.use(express.json());
+//app.use(cors());
+
+
 
 // Routes API
 app.use('/', apiRoute);
