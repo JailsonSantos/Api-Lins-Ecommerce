@@ -18,42 +18,18 @@ const product_1 = require("./routes/product");
 const api_1 = require("./routes/api");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
-// CORS
-//const allowedOrigins = [" * "]; // Libera todas as origens
-/* const allowedOrigins = [
-  'http://localhost:5000',
-  'http://localhost:3000',
-  'https://dashboard.stripe.com',
-  "https://checkout.stripe.com",
-  'https://api-lins-ecommerce.vercel.app/api/checkout/payment',
-  'https://resttesttest.com'
-];
-const options: cors.CorsOptions = {
-  allowedHeaders: [
-    'Origin',
-    'X-Requested-With',
-    'Content-Type',
-    'Accept',
-    'X-Access-Token',
-  ],
-  credentials: true,
-  methods: 'GET,PUT,POST,DELETE',
-  origin: allowedOrigins,
-  preflightContinue: false,
-}; */
-//console.log(allowedOrigins);
 app.use(express_1.default.json());
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
-    app.use((0, cors_1.default)());
-    next();
-});
+app.use((0, cors_1.default)());
+/* app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
+  app.use(cors());
+  next();
+}); */
 // Configuração do MongoDB
 mongoose_1.default.connect(String(process.env.MONGO_URL))
     .then(() => console.log("DB Connection Successful!"))
     .catch(() => console.log("DB Connection Failure!"));
-//app.use(cors());
 // Routes API
 app.use('/', api_1.apiRoute);
 app.use('/api/auth', auth_1.authRoute);
