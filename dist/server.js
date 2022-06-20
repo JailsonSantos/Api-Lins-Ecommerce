@@ -20,12 +20,6 @@ const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-/* app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
-  app.use(cors());
-  next();
-}); */
 // Configuração do MongoDB
 mongoose_1.default.connect(String(process.env.MONGO_URL))
     .then(() => console.log("DB Connection Successful!"))

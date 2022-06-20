@@ -74,10 +74,17 @@ productRoute.get('/find/:id', (request, response) => __awaiter(void 0, void 0, v
 productRoute.get('/', (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const qNew = request.query.new;
     const qCategory = request.query.category;
+    // Paginação
+    const page = +request.query.page || 1;
+    const per_page = +request.query.limit || 5;
+    const pageStart = (Number(page) - 1) * Number(per_page);
+    const pageEnd = pageStart + Number(per_page);
     try {
         let products;
+        let total;
         if (qNew) {
-            products = yield Product_1.Product.find().sort({ createdAt: -1 }).limit(1);
+            // Lista em ordem Descrecente (-1) ou Crescente (1) limite de 10 produtos
+            products = yield Product_1.Product.find().sort({ createdAt: -1 }).limit(10);
         }
         else if (qCategory) {
             products = yield Product_1.Product.find({
@@ -85,11 +92,13 @@ productRoute.get('/', (request, response) => __awaiter(void 0, void 0, void 0, f
                     $in: [qCategory],
                 },
             });
+            total = products.length;
+            products = products.slice(pageStart, pageEnd);
         }
         else {
             products = yield Product_1.Product.find();
         }
-        return response.status(200).json(products);
+        return response.status(200).json({ products, total });
     }
     catch (error) {
         return response.status(500).json(error);

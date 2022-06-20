@@ -65,22 +65,35 @@ productRoute.get('/', async (request: Request, response: Response) => {
   const qNew = request.query.new;
   const qCategory = request.query.category;
 
+  // Paginação
+  const page = +request.query.page! || 1;
+  const per_page = +request.query.limit! || 5;
+
+
+  const pageStart = (Number(page) - 1) * Number(per_page);
+  const pageEnd = pageStart + Number(per_page);
+
   try {
     let products;
+    let total;
 
     if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+      // Lista em ordem Descrecente (-1) ou Crescente (1) limite de 10 produtos
+      products = await Product.find().sort({ createdAt: -1 }).limit(10);
     } else if (qCategory) {
       products = await Product.find({
         categories: {
           $in: [qCategory],
         },
-      });
+      })
+
+      total = products.length;
+      products = products.slice(pageStart, pageEnd);
     } else {
       products = await Product.find();
     }
 
-    return response.status(200).json(products);
+    return response.status(200).json({ products, total });
   } catch (error) {
     return response.status(500).json(error);
   }
